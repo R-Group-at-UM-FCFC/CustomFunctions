@@ -1,0 +1,154 @@
+---
+title: "How to build Custom Functions in R"
+output: html_document
+---
+**Author**  : Waldemar Ortiz-Calo
+
+**Date**    : 1/10/2021
+
+**Purpose** : The purpose of this repository is to serve as a guide to writing custom functions. In R, functions facilitate the iteration of tasks in one's script. Basically, a function condenses the actions of multiple lines of code into a simple structure. In this guide, I will provide a simple framework to create your own functions and ways you can use functions to iterate your workflows.
+
+### **How to Create Functions**
+
+***
+
+#### **Important Definitions**
+
++ **Function_Name** : This is the name of your function. When using your function in our script, this is what you will use to call the function in your script.
+
++ **Argument** : This is your function's input. Here you will provide the function with the necessary arguments to complete the task you designed. In its simplest form, the arguement portion of the function structure corresponds to your data.
+
++ **Script** : The script portion of the functions is the tasks you wish to employ on the arguments you have provided for your function. 
+
+#### **Basic Function structure**
+
+In their most basic form, functions are structured as follows: 
+
+``` {r}
+function_name <- function (argument) {
+
+script(arguement)
+
+}
+
+```
+
+As an example, I will create a function that prints a greeting message with a name as an input.
+
+``` {r}
+PrintName <- function(name){
+
+return(paste("Hello, my name is", name))
+
+}
+
+```
+
+#### **Advanced Function Structures**
+
+Here there are going to be examples of more advanced functions and their descriptions
+
+**1. Default Arguments**
+
+Here is an example of a function with default arguments. This function essentially exponentiates whatever value you feed as an input. The default exponent has been set to 2 as you can see in the arguement list. 
+
+``` {r}
+expo <- function (value, exp = 2) {
+
+x <- value^exp
+
+return(x)
+}
+```
+
+Here an example using 4 as an input value
+
+``` {r, echo = T}
+expo(4)
+```
+
+Now, I want to change the default exponentiation to a different value. In this case I want to change it to 3.
+
+``` {r, echo = T}
+expo(4, exp = 3)
+```
+
+**2. Conditional Functions**
+
+Another advanced use of functions is using conditional statements to give different outputs based on predetermined conditions.
+
+``` {r, echo = T}
+
+valuecheck <- function(x) {
+if (x > 0) {
+result <- "Positive"
+}
+else if (x < 0) {
+result <- "Negative"
+}
+else {
+result <- "Zero"
+}
+return(result)
+}
+```
+
+Here I try different values and you will see that my output changes according to the conditional criteria.
+
+``` {r, echo = T}
+valuecheck(10)
+
+valuecheck(-10)
+
+valuecheck(0)
+```
+
+#### **Saving Functions for Future Use**
+
+Saving a custom function is very helpful for future endeavors. 
+
+The easiest way to got about this is to copy your function into an empty script, save the script, and store in a logical directory within your project folder structures. 
+
+Once you need to use the custom function again, all you need to do is use the source function in R to load it into your global environment. You can add this to your script's first lines similarly to how you load up packages when starting a project.
+
+```{r,eval=F}
+source("Function's filepath")
+```
+### **How to Iterate Code using Functions**
+***
+#### **Using lapply**
+
+This is my preferred way of iterating code.
+
+lapply is a function within the apply family that takes an input and iteratively "applies" a function to said data. Each apply function has their own nuances and specific outputs. In the case of lapply, the input is a list and the output will produce a list as well (the resulting data class will depend on the function's output format).
+
+lapply's structure is the following
+
+```{r, eval = F}
+
+lapply(list, function)
+
+```
+
+Now, to iterate code using a function it is fairly simple. The following example will be using the exponentiation function that was created earlier in the tutorial.
+
+```{r,eval=T}
+
+Data <- c(2,4,8,16)
+
+lapply(Data,expo)
+```
+
+You will see that, with the lapply function, we created a list of values and iterated our exponentiation function on said data. You can then store this data in an object, or export it for any other purpose that you might have. 
+
+Another thing that is possible with the apply family is to provide additional arguments other than the input data. Again, we will use the exponentiation function as an example. Just like we did before, I want to change the value of the exponentiation to 3.
+
+```{r,eval=T}
+
+Data <- c(2,4,8,16)
+
+lapply(Data,expo,exp = 3)
+```
+
+As seen in the example, the best way to add additional arguments to an lapply statement is to provide them  after the function argument of the lapply statement. 
+
