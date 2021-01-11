@@ -152,3 +152,60 @@ lapply(Data,expo,exp = 3)
 
 As seen in the example, the best way to add additional arguments to an lapply statement is to provide them  after the function argument of the lapply statement. 
 
+#### **Using foreach**
+
+```{r}
+library(foreach)
+```
+
+foreach is a great package that facilitates a for loop structure in a "friendlier" format and allows for parallelization of code with simple modifications. Below I will attach an example of a foreach structure. 
+
+```{r}
+Data <- c(2,4,8,16)
+
+foreach(i = 1:3) %do%{
+  expo(Data[i])
+}
+```
+
+A neat feature of the foreach functions is that it allows for a user-friendly storage of results using the ".combine" argument in the function structure. For example, indicating the "c" value for the .combine argument concatenates the results into vector form.
+
+```{r}
+Data <- c(2,4,8,16)
+
+foreach(i = 1:3, .combine = c) %do%{
+  expo(Data[i])
+}
+```
+
+Lastly if you want to vectorize the output of the foreach loop, all you need to do is add a vector prior to the foreach statement. 
+
+
+```{r}
+Data <- c(2,4,8,16)
+
+result <- foreach(i = 1:3, .combine = c) %do%{
+  expo(Data[i])
+}
+
+result
+```
+
+### **Additional Resources** 
+*** 
+#### **Creating Functions**
+https://nicercode.github.io/guides/functions/
+
+https://www.pluralsight.com/guides/beauty-custom-functions-r
+
+https://swcarpentry.github.io/r-novice-inflammation/02-func-R/
+
+#### **Iteration**
+##### Future Apply
+https://github.com/HenrikBengtsson/future.apply
+
+##### Foreach
+
+https://privefl.github.io/blog/a-guide-to-parallelism-in-r/
+
+https://beckmw.wordpress.com/tag/foreach/
